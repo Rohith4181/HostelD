@@ -1,0 +1,32 @@
+[
+  {
+    "name": "BC Welfare Boys Hostel, Ameerpet",
+    "district": "Hyderabad",
+    "state": "Telangana",
+    "address": "Lane No 5, Satyam Theatre Road, Ameerpet, Hyderabad",
+    "latitude": 17.4375,
+    "longitude": 78.4482,
+    "averageRating": 4.5,
+    "coverImage": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  },
+  {
+    "name": "SC Welfare Girls Hostel, Secunderabad",
+    "district": "Hyderabad",
+    "state": "Telangana",
+    "address": "Near Clock Tower, Regimental Bazaar, Secunderabad",
+    "latitude": 17.4399,
+    "longitude": 78.4983,
+    "averageRating": 2.8,
+    "coverImage": "https://images.unsplash.com/photo-1596276020587-8044fe049813?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  },
+  {
+    "name": "ST Boys Hostel, Warangal",
+    "district": "Warangal",
+    "state": "Telangana",
+    "address": "Hanamkonda Main Road, Near Kakatiya University, Warangal",
+    "latitude": 17.9689,
+    "longitude": 79.5941,
+    "averageRating": 3.9,
+    "coverImage": "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+  }
+]

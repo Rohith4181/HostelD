@@ -1,0 +1,46 @@
+.daily-upload-card {
+  background: white;
+  border: 2px solid #2196f3;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
+}
+
+.upload-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #2196f3;
+}
+
+.badge { background: #e3f2fd; color: #1976d2; padding: 5px 10px; border-radius: 15px; font-weight: bold; }
+
+.location-section { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+.location-section p { font-weight: bold; margin-bottom: 10px; }
+
+.btn-location {
+  width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold;
+}
+.btn-location.Wait { background: #673ab7; color: white; }
+.btn-location.Loading { background: #9575cd; color: white; cursor: wait; }
+.btn-location.Success { background: #4caf50; color: white; cursor: default; }
+.btn-location.Error { background: #f44336; color: white; }
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+.form-group input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+
+.url-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+
+.btn-upload {
+  width: 100%; background: #2196f3; color: white; padding: 12px; border: none;
+  border-radius: 5px; font-size: 1rem; font-weight: bold; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-upload:disabled { background: #ccc; cursor: not-allowed; }
+
+.success-msg { color: #2e7d32; background: #e8f5e9; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+.error-msg { color: #c62828; background: #ffebee; padding: 10px; margin-bottom: 10px; border-radius: 4px; }

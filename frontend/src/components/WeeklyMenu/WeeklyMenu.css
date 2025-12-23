@@ -1,0 +1,66 @@
+.menu-container {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-top: 30px;
+}
+
+.menu-container h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.menu-table th, .menu-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-table th {
+  background-color: #f8f9fa;
+  color: #555;
+  font-weight: bold;
+}
+
+.day-name {
+  font-weight: bold;
+  color: #1a237e;
+  min-width: 120px;
+}
+
+/* Highlight Today's Row */
+.highlight-today {
+  background-color: #e8f5e9; /* Light Green */
+  border-left: 4px solid #4caf50;
+}
+
+.today-badge {
+  background: #4caf50;
+  color: white;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .menu-table th, .menu-table td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}

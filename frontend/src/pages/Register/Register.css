@@ -1,0 +1,134 @@
+/* Container handles the background and centering */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  padding: 20px;
+}
+
+/* The white card */
+.register-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.register-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.register-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.error-msg {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box; /* Ensures padding doesn't break layout */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Special styling for the Secret Code section */
+.secret-group input {
+  border-color: #ffd700;
+  background-color: #fffff0;
+}
+
+.hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Button */
+.btn-register {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-register:hover {
+  background-color: #0056b3;
+}
+
+.register-footer {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.register-footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* --- Media Queries (Responsiveness) --- */
+
+/* Mobile Devices (phones, less than 600px) */
+@media (max-width: 600px) {
+  .register-container {
+    padding: 20px;
+    box-shadow: none; /* Remove shadow on mobile for flatter look */
+    background: transparent; /* Blend with background */
+  }
+
+  .register-page {
+    background-color: white; /* White background for whole page on mobile */
+    align-items: flex-start; /* Push to top */
+    padding-top: 40px;
+  }
+
+  .register-title {
+    font-size: 1.5rem;
+  }
+}

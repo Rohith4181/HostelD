@@ -1,0 +1,124 @@
+.tracker-container {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-top: 30px;
+}
+
+.tracker-container h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+}
+
+.tracker-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* The Grid */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Responsive grid */
+  gap: 8px;
+}
+
+.day-box {
+  aspect-ratio: 1; /* Makes it a square */
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: default;
+  transition: transform 0.2s;
+}
+
+.day-box.uploaded {
+  background-color: #28a745; /* Green */
+  color: white;
+  cursor: pointer;
+}
+
+.day-box.uploaded:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.day-box.missing {
+  background-color: #e9ecef; /* Grey */
+  color: #adb5bd;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.food-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.food-item span {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.food-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Mobile Responsive Modal */
+@media (max-width: 600px) {
+  .food-gallery {
+    grid-template-columns: 1fr; /* Stack images vertically */
+  }
+  .food-item img {
+    height: 180px;
+  }
+}

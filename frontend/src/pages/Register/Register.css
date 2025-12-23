@@ -1,134 +1,115 @@
-/* Container handles the background and centering */
-.register-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f4f7f6;
-  padding: 20px;
-}
-
-/* The white card */
-.register-container {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-}
-
-.register-title {
-  text-align: center;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.register-subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 30px;
-  font-size: 0.9rem;
-}
-
-.error-msg {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-/* Form Styles */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #444;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-  box-sizing: border-box; /* Ensures padding doesn't break layout */
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-/* Special styling for the Secret Code section */
-.secret-group input {
-  border-color: #ffd700;
-  background-color: #fffff0;
-}
-
-.hint {
-  display: block;
-  margin-top: 5px;
-  font-size: 0.8rem;
-  color: #888;
-}
-
-/* Button */
-.btn-register {
-  width: 100%;
-  padding: 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-register:hover {
-  background-color: #0056b3;
-}
-
-.register-footer {
-  margin-top: 25px;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.register-footer a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-/* --- Media Queries (Responsiveness) --- */
-
-/* Mobile Devices (phones, less than 600px) */
-@media (max-width: 600px) {
-  .register-container {
+/* --- Global Container --- */
+.register-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f2f5;
+    background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
     padding: 20px;
-    box-shadow: none; /* Remove shadow on mobile for flatter look */
-    background: transparent; /* Blend with background */
-  }
+}
 
-  .register-page {
-    background-color: white; /* White background for whole page on mobile */
-    align-items: flex-start; /* Push to top */
-    padding-top: 40px;
-  }
+/* --- Card Styles --- */
+.register-card {
+    border-radius: 12px !important;
+    overflow: hidden;
+    border-top: 5px solid #1a237e; /* Government Blue */
+}
 
-  .register-title {
-    font-size: 1.5rem;
-  }
+.register-content {
+    padding: 40px !important;
+}
+
+/* --- Header Section --- */
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a237e; /* Primary Navy Blue */
+}
+
+.govt-icon {
+    color: #1a237e;
+    font-size: 3rem !important;
+    margin-bottom: 10px;
+}
+
+.header-title {
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.header-subtitle {
+    color: #546e7a; /* Muted Blue-Grey */
+    font-size: 0.9rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* --- Button Styling --- */
+.submit-btn {
+    background-color: #1a237e !important; /* Govt Blue */
+    padding: 12px 0 !important;
+    font-weight: bold !important;
+    letter-spacing: 1px !important;
+    margin-top: 10px !important;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #283593 !important; /* Lighter Blue on Hover */
+    box-shadow: 0px 4px 10px rgba(26, 35, 126, 0.4);
+}
+
+.submit-btn:disabled {
+    background-color: #9fa8da !important;
+}
+
+/* --- Footer Links --- */
+.register-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+}
+
+.login-link {
+    text-decoration: none;
+    color: #1a237e;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.login-link:hover {
+    color: #d32f2f; /* Highlight Color */
+    text-decoration: underline;
+}
+
+/* --- MEDIA QUERIES --- */
+
+/* Mobile Devices (Phones) */
+@media screen and (max-width: 600px) {
+    .register-content {
+        padding: 20px !important;
+    }
+
+    .header-title {
+        font-size: 1.5rem !important;
+    }
+
+    .header-subtitle {
+        font-size: 0.75rem !important;
+    }
+
+    .submit-btn {
+        padding: 10px 0 !important;
+    }
+}
+
+/* Tablet Devices */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+    .register-container {
+        max-width: 80% !important;
+    }
 }

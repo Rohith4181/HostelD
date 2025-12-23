@@ -2,27 +2,58 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import api from '../../utils/api';
+
+// Material UI Components
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  MenuItem,
+  Box,
+  InputAdornment,
+  CircularProgress,
+  Alert,
+  Divider
+} from '@mui/material';
+
+// Material UI Icons
+import {
+  Domain,
+  Place,
+  Person,
+  Map,
+  CloudUpload,
+  Save,
+  LocationCity,
+  Home
+} from '@mui/icons-material';
+
+// Import CSS
 import './AddHostel.css';
 
 const AddHostel = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // State
+  // --- EXISTING STATE (Preserved) ---
   const [name, setName] = useState('');
   const [district, setDistrict] = useState('');
   const [state, setState] = useState('');
-  const [address, setAddress] = useState(''); // New Address State
+  const [address, setAddress] = useState('');
   const [warden, setWarden] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
-  const [coverImageFile, setCoverImageFile] = useState(null); // File Object
+  const [coverImageFile, setCoverImageFile] = useState(null);
 
   const [wardens, setWardens] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // 1. Fetch Unassigned Wardens
+  // --- EXISTING LOGIC: Fetch Unassigned Wardens ---
   useEffect(() => {
     if (user && user.role !== 'DWO') {
       navigate('/dashboard');
@@ -43,14 +74,17 @@ const AddHostel = () => {
     fetchWardens();
   }, [user, navigate]);
 
+  // --- EXISTING HANDLERS ---
   const onFileChange = (e) => {
-    setCoverImageFile(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      setCoverImageFile(e.target.files[0]);
+    }
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     
-    // Prepare FormData for file upload
+    // Prepare FormData
     const formData = new FormData();
     formData.append('name', name);
     formData.append('district', district);
@@ -71,116 +105,234 @@ const AddHostel = () => {
     }
   };
 
-  if (loading) return <div className="loading-screen">Loading...</div>;
+  // --- LOADING STATE ---
+  if (loading) {
+    return (
+      <Box className="loading-container">
+        <CircularProgress />
+        <Typography sx={{ mt: 2 }}>Loading resources...</Typography>
+      </Box>
+    );
+  }
 
+  // --- RENDER UI ---
   return (
-    <div className="add-hostel-page">
-      <div className="form-card">
-        <h2>Register New Hostel</h2>
-        <p className="subtitle">Enter details and assign a warden.</p>
+    <div className="add-hostel-page-wrapper">
+      <Container maxWidth="md">
+        
+        <Card className="form-card" elevation={4}>
+          <CardContent className="form-content">
+            
+            {/* Header */}
+            <Box className="form-header">
+              <Domain className="header-icon" />
+              <Typography variant="h5" className="header-title">
+                Register New Hostel
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Enter facility details and assign an official warden.
+              </Typography>
+            </Box>
 
-        {error && <div className="error-banner">{error}</div>}
+            <Divider className="header-divider" />
 
-        <form onSubmit={onSubmit}>
-          <div className="form-group">
-            <label>Hostel Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="e.g. BC Welfare Boys Hostel"
-            />
-          </div>
-
-          {/* New Address Field */}
-          <div className="form-group">
-            <label>Full Address</label>
-            <textarea
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-              placeholder="Street, Landmark, Area..."
-              rows="3"
-              style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
-            ></textarea>
-          </div>
-
-          <div className="row">
-            <div className="form-group half">
-              <label>District</label>
-              <input
-                type="text"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group half">
-              <label>State</label>
-              <input
-                type="text"
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label>Assign Warden</label>
-            <select value={warden} onChange={(e) => setWarden(e.target.value)} required>
-              <option value="">-- Select a Warden --</option>
-              {wardens.map((w) => (
-                <option key={w._id} value={w._id}>
-                  {w.name} (Ph: {w.contactNumber || 'N/A'})
-                </option>
-              ))}
-            </select>
-            {wardens.length === 0 && (
-              <small className="warning-text">No unassigned wardens available.</small>
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
             )}
-          </div>
 
-          <div className="row">
-            <div className="form-group half">
-              <label>Latitude</label>
-              <input
-                type="number"
-                step="any"
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-                required
-                placeholder="17.4375"
-              />
-            </div>
-            <div className="form-group half">
-              <label>Longitude</label>
-              <input
-                type="number"
-                step="any"
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-                required
-                placeholder="78.4482"
-              />
-            </div>
-          </div>
+            <form onSubmit={onSubmit} encType="multipart/form-data">
+              <Grid container spacing={3}>
 
-          {/* New File Upload Field */}
-          <div className="form-group">
-            <label>Cover Image (Upload)</label>
-            <input
-              type="file"
-              onChange={onFileChange}
-              required
-              accept="image/*"
-            />
-          </div>
+                {/* --- Section 1: Basic Info --- */}
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Hostel Name"
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    placeholder="e.g. BC Welfare Boys Hostel"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Home color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
 
-          <button type="submit" className="btn-submit">Save Hostel</button>
-        </form>
-      </div>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Full Address"
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                    placeholder="Street, Landmark, Area..."
+                  />
+                </Grid>
+
+                {/* --- Section 2: Location --- */}
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="District"
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LocationCity color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="State"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Map color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                {/* --- Section 3: Warden Assignment --- */}
+                <Grid item xs={12}>
+                  <TextField
+                    select
+                    fullWidth
+                    label="Assign Warden"
+                    value={warden}
+                    onChange={(e) => setWarden(e.target.value)}
+                    required
+                    helperText="Select a warden from the unassigned list"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Person color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>-- Select a Warden --</em>
+                    </MenuItem>
+                    {wardens.map((w) => (
+                      <MenuItem key={w._id} value={w._id}>
+                        {w.name} (Ph: {w.contactNumber || 'N/A'})
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {wardens.length === 0 && (
+                    <Typography variant="caption" color="error" sx={{ ml: 2 }}>
+                      * No unassigned wardens available.
+                    </Typography>
+                  )}
+                </Grid>
+
+                {/* --- Section 4: Geolocation --- */}
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="Latitude"
+                    value={latitude}
+                    onChange={(e) => setLatitude(e.target.value)}
+                    required
+                    placeholder="17.4375"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Place color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="Longitude"
+                    value={longitude}
+                    onChange={(e) => setLongitude(e.target.value)}
+                    required
+                    placeholder="78.4482"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Place color="action" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+
+                {/* --- Section 5: Image Upload --- */}
+                <Grid item xs={12}>
+                  <Box className="file-upload-box">
+                    <Button
+                      variant="outlined"
+                      component="label"
+                      startIcon={<CloudUpload />}
+                      className="upload-btn"
+                    >
+                      Upload Cover Image
+                      <input
+                        type="file"
+                        hidden
+                        accept="image/*"
+                        onChange={onFileChange}
+                        required
+                      />
+                    </Button>
+                    {coverImageFile && (
+                      <Typography variant="body2" className="file-name">
+                        Selected: {coverImageFile.name}
+                      </Typography>
+                    )}
+                  </Box>
+                </Grid>
+
+                {/* --- Submit Button --- */}
+                <Grid item xs={12}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    className="submit-btn"
+                    startIcon={<Save />}
+                    disabled={wardens.length === 0 && !warden} // Optional safety check
+                  >
+                    Save Hostel Registration
+                  </Button>
+                </Grid>
+
+              </Grid>
+            </form>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
   );
 };

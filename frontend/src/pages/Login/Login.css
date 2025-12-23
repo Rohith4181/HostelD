@@ -1,0 +1,122 @@
+/* --- Global Wrapper --- */
+.login-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f6f8; /* Standard Dashboard Grey */
+    background-image: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+    padding: 20px;
+}
+
+/* --- Card Styling --- */
+.login-card {
+    border-radius: 10px !important;
+    border-top: 5px solid #1a237e; /* Official Navy Blue Accent */
+    overflow: hidden;
+}
+
+.login-content {
+    padding: 30px 40px !important;
+}
+
+/* --- Header Section --- */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a237e;
+}
+
+.govt-logo-icon {
+    font-size: 3.5rem !important;
+    margin-bottom: 10px;
+    color: #1a237e;
+}
+
+.login-title {
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.login-subtitle {
+    color: #546e7a; /* Muted Blue-Grey */
+    text-transform: uppercase;
+    font-size: 0.8rem !important;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* --- Input Fields Override --- */
+/* Making focused inputs match the govt theme */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #1a237e !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+    color: #1a237e !important;
+}
+
+/* --- Button Styling --- */
+.login-btn {
+    background-color: #1a237e !important; /* Govt Blue */
+    padding: 12px 0 !important;
+    font-weight: bold !important;
+    letter-spacing: 1px !important;
+    margin-top: 10px !important;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #283593 !important; /* Lighter shade on hover */
+    box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+}
+
+.login-btn:disabled {
+    background-color: #9fa8da !important;
+    color: white !important;
+}
+
+/* --- Footer Links --- */
+.login-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+}
+
+.register-link {
+    text-decoration: none;
+    color: #1a237e;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.register-link:hover {
+    color: #d32f2f; /* Alert Red for interaction */
+    text-decoration: underline;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Mobile Devices (Phones) */
+@media screen and (max-width: 600px) {
+    .login-content {
+        padding: 25px 20px !important;
+    }
+
+    .login-title {
+        font-size: 1.5rem !important;
+    }
+
+    .govt-logo-icon {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* Tablet Devices */
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+    .login-container {
+        max-width: 500px !important;
+    }
+}

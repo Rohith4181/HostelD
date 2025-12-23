@@ -36,7 +36,7 @@ exports.register = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      contactNumber // Optional, mostly for Wardens
+      contactNumber // Optional
     });
 
     // 5. Send Token
@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
     }
 
     // 2. Check for user
-    const user = await User.findOne({ email }).select('+password'); // We explicitly select password as it's usually hidden
+    const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
@@ -79,25 +79,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Helper function to get token from model, create cookie/response
-const sendTokenResponse = (user, statusCode, res) => {
-  // Create token
-  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: '30d'
-  });
-
-  res.status(statusCode).json({
-    success: true,
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    }
-  });
-};
-
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
@@ -111,4 +92,46 @@ exports.getMe = async (req, res) => {
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
   }
+};
+
+// @desc    Log user out / clear cookie
+// @route   GET /api/auth/logout
+// @access  Private
+exports.logout = async (req, res) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
+};
+
+// Helper function to get token from model, create cookie/response
+const sendTokenResponse = (user, statusCode, res) => {
+  // Create token
+  const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+    expiresIn: '30d'
+  });
+
+  const options = {
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    httpOnly: true
+  };
+
+  res
+    .status(statusCode)
+    .cookie('token', token, options)
+    .json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
 };

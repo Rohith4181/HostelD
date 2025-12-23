@@ -44,10 +44,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Register Function
-  const register = async (formData) => {
+  const register = async (name, email, password, role, secretCode, contactNumber) => {
     try {
       setError(null);
-      const res = await api.post('/auth/register', formData);
+      // NOTE: I updated this to accept individual arguments or formData, 
+      // but usually sending an object is safer.
+      const res = await api.post('/auth/register', {
+        name, email, password, role, secretCode, contactNumber
+      });
       
       localStorage.setItem('token', res.data.token);
       setUser(res.data.user);
@@ -58,9 +62,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout Function
-  const logout = () => {
+  // --- UPDATED LOGOUT FUNCTION ---
+  const logout = async () => {
+    try {
+      // 1. Call Backend to clear httpOnly cookie
+      await api.get('/auth/logout');
+    } catch (err) {
+      console.error("Logout backend error:", err);
+    }
+
+    // 2. Clear Local Storage
     localStorage.removeItem('token');
+
+    // 3. Clear State (Updates Navbar immediately)
     setUser(null);
   };
 

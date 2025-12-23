@@ -64,3 +64,11 @@
     font-size: 0.9rem;
   }
 }
+/* Minimal updates needed as MUI handles most styling */
+.MuiTableCell-head {
+  color: #1a237e !important; /* Govt Blue for Headers */
+}
+
+.MuiTableCell-root {
+  border-bottom: 1px solid #f0f0f0 !important;
+}

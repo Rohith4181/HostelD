@@ -1,0 +1,99 @@
+/* --- Navbar Base Styles --- */
+.navbar-appbar {
+    background-color: #1a237e !important; /* Govt Navy Blue */
+    color: white;
+}
+
+.navbar-toolbar {
+    display: flex;
+    justify-content: space-between;
+    min-height: 70px !important;
+}
+
+/* --- Logo Section --- */
+.nav-logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-icon {
+    opacity: 0.9;
+}
+
+.nav-title {
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    line-height: 1.2 !important;
+}
+
+.nav-subtitle {
+    opacity: 0.8;
+    text-transform: uppercase;
+    font-size: 0.7rem !important;
+    letter-spacing: 1px;
+    display: block;
+}
+
+/* --- User Section --- */
+.nav-user-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-username {
+    font-weight: 500;
+    font-size: 0.9rem !important;
+}
+
+/* --- Logout Button --- */
+.nav-logout-btn {
+    text-transform: none !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 4px 15px !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.nav-logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* --- MEDIA QUERIES (Mobile Responsiveness) --- */
+@media screen and (max-width: 600px) {
+    .navbar-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 0;
+        gap: 15px;
+    }
+
+    .nav-user-area {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-user-info {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .nav-subtitle {
+        font-size: 0.6rem !important;
+    }
+}

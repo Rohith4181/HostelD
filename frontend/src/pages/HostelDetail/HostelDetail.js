@@ -19,7 +19,7 @@ import Reviews from '../../components/Reviews/Reviews';
 // Material UI Components
 import {
   Container, Box, Typography, Button, Grid, Card, CardContent, 
-  Chip, Avatar, Divider, CircularProgress, Paper
+  Chip, Avatar, CircularProgress, Paper
 } from '@mui/material';
 
 // Icons
@@ -91,12 +91,18 @@ const HostelDetail = () => {
   );
 
   // --- IDs & Role Checks ---
-  const hostelWardenId = hostel.warden?._id || hostel.warden;
-  const currentUserId = user?._id || user?.id;
+  // 1. Get Hostel Warden ID safely
+  const rawWardenId = hostel.warden?._id || hostel.warden;
+  const hostelWardenId = rawWardenId ? rawWardenId.toString() : null;
 
+  // 2. Get Current User ID safely
+  const rawUserId = user?._id || user?.id;
+  const currentUserId = rawUserId ? rawUserId.toString() : null;
+
+  // 3. Perform Checks
   const isDWO = user && user.role === 'DWO';
   const isAssignedWarden = user && user.role === 'Warden' && currentUserId === hostelWardenId;
-  const isStudent = user && user.role === 'Student'; // Used for Map visibility
+  const isStudent = user && user.role === 'Student';
 
   // --- Geolocation Check ---
   const hasLocation = hostel.latitude && hostel.longitude;
@@ -175,7 +181,7 @@ const HostelDetail = () => {
         {/* --- 3. FULL WIDTH VERTICAL STACK --- */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
 
-          {/* A. MAP CARD (Visible ONLY to Students) - Full Width */}
+          {/* A. MAP CARD (Visible ONLY to Students) */}
           {isStudent && (
             <Card elevation={2} className="full-width-card" sx={{ overflow: 'hidden' }}>
               <Box sx={{ p: 2, borderBottom: '1px solid #eee', bgcolor: '#fafafa', display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -210,19 +216,19 @@ const HostelDetail = () => {
             </Card>
           )}
 
-          {/* B. Daily Tracker - Full Width */}
+          {/* B. Daily Tracker */}
           <Box className="section-box">
              <DailyTracker hostelId={id} />
           </Box>
 
-          {/* C. Daily Upload (Warden/DWO) - Full Width */}
+          {/* C. Daily Upload (Visible to Warden/DWO) */}
           {(isAssignedWarden || isDWO) && (
             <Box className="section-box">
               <DailyUpload hostelId={id} hostelWardenId={hostelWardenId} />
             </Box>
           )}
 
-          {/* D. Weekly Menu - Full Width */}
+          {/* D. Weekly Menu */}
           <Card elevation={2} className="full-width-card">
             <Box sx={{ p: 2, borderBottom: '1px solid #eee', bgcolor: '#fafafa', display: 'flex', alignItems: 'center', gap: 1 }}>
               <RestaurantMenu color="primary" />
@@ -233,7 +239,7 @@ const HostelDetail = () => {
             </CardContent>
           </Card>
 
-          {/* E. Complaint Box - Full Width */}
+          {/* E. Complaint Box */}
           <Card elevation={2} className="full-width-card">
             <Box sx={{ p: 2, borderBottom: '1px solid #eee', bgcolor: '#fff3e0', display: 'flex', alignItems: 'center', gap: 1 }}>
               <ReportProblem color="error" />
@@ -244,7 +250,7 @@ const HostelDetail = () => {
             </CardContent>
           </Card>
 
-          {/* F. Reviews - Full Width */}
+          {/* F. Reviews */}
           <Box className="section-box">
             <Reviews hostelId={id} />
           </Box>

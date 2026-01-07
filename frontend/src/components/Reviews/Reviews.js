@@ -2,7 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import api from '../../utils/api';
 import AuthContext from '../../context/AuthContext';
 import './Reviews.css';
-import { FaStar } from 'react-icons/fa';
+
+// Material UI
+import { 
+  Box, Typography, TextField, Button, Rating, Avatar, 
+  List, ListItem, ListItemAvatar, ListItemText, Divider, IconButton 
+} from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 const Reviews = ({ hostelId }) => {
   const { user } = useContext(AuthContext);
@@ -15,9 +21,7 @@ const Reviews = ({ hostelId }) => {
       try {
         const res = await api.get(`/reviews/${hostelId}`);
         setReviews(res.data.data);
-      } catch (err) {
-        console.error("Error fetching reviews", err);
-      }
+      } catch (err) { console.error(err); }
     };
     fetchReviews();
   }, [hostelId]);
@@ -26,58 +30,109 @@ const Reviews = ({ hostelId }) => {
     e.preventDefault();
     try {
       const res = await api.post(`/reviews/${hostelId}`, { rating, comment });
-      setReviews([res.data.data, ...reviews]); // Add new review to list
+      // Prepend new review to the list immediately
+      setReviews([res.data.data, ...reviews]);
       setComment('');
-      alert('Review Added!');
-      // Reload page to see updated Average Rating in the header
       window.location.reload(); 
-    } catch (err) {
-      alert(err.response?.data?.error || 'Error adding review');
+    } catch (err) { 
+      alert(err.response?.data?.error || 'Error adding review'); 
     }
   };
 
-  return (
-    <div className="reviews-section">
-      <h3>Reviews & Ratings ({reviews.length})</h3>
+  // --- DELETE HANDLER ---
+  const handleDelete = async (reviewId) => {
+    if(!window.confirm("Are you sure you want to delete your review?")) return;
 
-      {/* Form: Only Students can review */}
+    try {
+      await api.delete(`/reviews/${reviewId}`);
+      // Remove from UI immediately
+      setReviews(reviews.filter(r => r._id !== reviewId));
+    } catch (err) {
+      alert("Failed to delete review");
+    }
+  };
+
+  const currentUserId = user?._id || user?.id;
+
+  return (
+    <Box sx={{ bgcolor: 'white', p: 2, borderRadius: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>Student Reviews ({reviews.length})</Typography>
+      </Box>
+
+      {/* Review Form */}
       {user && user.role === 'Student' && (
-        <form className="review-form" onSubmit={handleSubmit}>
-          <h4>Write a Review</h4>
-          <div className="rating-select">
-            <label>Rating: </label>
-            <select value={rating} onChange={(e) => setRating(e.target.value)}>
-              <option value="5">5 - Excellent</option>
-              <option value="4">4 - Good</option>
-              <option value="3">3 - Average</option>
-              <option value="2">2 - Poor</option>
-              <option value="1">1 - Terrible</option>
-            </select>
-          </div>
-          <textarea 
-            placeholder="Share your experience..." 
+        <Box component="form" onSubmit={handleSubmit} sx={{ mb: 4, p: 2, bgcolor: '#fafafa', borderRadius: 2 }}>
+          <Typography variant="subtitle2" gutterBottom>Write a Review</Typography>
+          <Box sx={{ mb: 2 }}>
+            <Typography component="legend">Rating</Typography>
+            <Rating value={Number(rating)} onChange={(e, val) => setRating(val)} />
+          </Box>
+          <TextField
+            fullWidth multiline rows={2}
+            placeholder="Share your experience..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             required
+            sx={{ mb: 2, bgcolor: 'white' }}
           />
-          <button type="submit">Submit Review</button>
-        </form>
+          <Button type="submit" variant="contained" size="small">Submit Review</Button>
+        </Box>
       )}
 
-      {/* List: Visible to everyone */}
-      <div className="review-list">
-        {reviews.map((r) => (
-          <div key={r._id} className="review-card">
-            <div className="r-header">
-              <strong>{r.user?.name || "Student"}</strong>
-              <span className="star-display"><FaStar color="#ffc107"/> {r.rating}</span>
-            </div>
-            <p>{r.comment}</p>
-            <small className="r-date">{new Date(r.createdAt).toLocaleDateString()}</small>
-          </div>
-        ))}
-      </div>
-    </div>
+      {/* Review List */}
+      <List sx={{ maxHeight: 400, overflow: 'auto' }}>
+        {reviews.length === 0 ? <Typography variant="body2" color="textSecondary">No reviews yet.</Typography> : null}
+        
+        {reviews.map((r, index) => {
+          // Check ownership: handle populated user object vs string ID
+          const reviewUserId = r.user._id || r.user; 
+          const isOwner = String(currentUserId) === String(reviewUserId);
+
+          return (
+            <React.Fragment key={r._id}>
+              <ListItem 
+                alignItems="flex-start"
+                secondaryAction={
+                  isOwner && (
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(r._id)}>
+                      <Delete color="error" fontSize="small" />
+                    </IconButton>
+                  )
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar sx={{ bgcolor: isOwner ? '#1976d2' : '#bdbdbd' }}>
+                    {r.user?.name?.[0] || 'S'}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', pr: 4 }}>
+                      <Typography variant="subtitle2">
+                        {r.user?.name || "Student"} {isOwner && "(You)"}
+                      </Typography>
+                      <Rating value={r.rating} readOnly size="small" />
+                    </Box>
+                  }
+                  secondary={
+                    <React.Fragment>
+                      <Typography variant="body2" color="textPrimary" sx={{ mt: 0.5 }}>
+                        {r.comment}
+                      </Typography>
+                      <Typography variant="caption" color="textSecondary" display="block" sx={{ mt: 0.5 }}>
+                        {new Date(r.createdAt).toLocaleDateString()}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+              {index < reviews.length - 1 && <Divider variant="inset" component="li" />}
+            </React.Fragment>
+          );
+        })}
+      </List>
+    </Box>
   );
 };
 

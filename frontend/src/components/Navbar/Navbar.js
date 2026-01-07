@@ -1,56 +1,100 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
-import { AppBar, Toolbar, Typography, Container, Box, Button, Tooltip } from '@mui/material';
-import { AccountBalance, AccountCircle, Logout as LogoutIcon } from '@mui/icons-material';
-import './Navbar.css';
+import { AppBar, Toolbar, Typography, Button, Box, Avatar } from '@mui/material';
+import { Logout, Dashboard, AccountBalance } from '@mui/icons-material';
+
+// Import the CSS file
+import './Navbar.css'; 
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
 
-  return (
-    <AppBar position="static" className="navbar-appbar" elevation={3}>
-      <Container maxWidth="lg">
-        <Toolbar disableGutters className="navbar-toolbar">
-          
-          {/* --- Logo Area --- */}
-          <Box className="nav-logo-area">
-            <AccountBalance fontSize="large" className="nav-icon" />
-            <Box>
-              <Typography variant="h6" component="div" className="nav-title">
-                HostelDrishti
-              </Typography>
-              <Typography variant="caption" className="nav-subtitle">
-                Govt. Welfare Monitoring System
-              </Typography>
-            </Box>
-          </Box>
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/login';
+  };
 
-          {/* --- User Controls & Logout --- */}
-          <Box className="nav-user-area">
-            {user && (
-              <Box className="nav-user-info">
-                <AccountCircle fontSize="small" />
-                <Typography variant="body2" className="nav-username">
-                  {user.name} ({user.role})
-                </Typography>
+  return (
+    <AppBar position="static" className="navbar-container">
+      <Toolbar>
+        
+        {/* --- LOGO AREA --- */}
+        <Box 
+          component={Link} 
+          to="/" 
+          className="nav-logo-area"
+        >
+          {/* Logo Icon - White Color via CSS */}
+          <AccountBalance fontSize="large" className="nav-icon" />
+          
+          <Box>
+            <Typography variant="h6" component="div" className="nav-title">
+              HostelDrishti
+            </Typography>
+            <Typography variant="caption" className="nav-subtitle">
+              SC/ST/BC Welfare Department
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* --- NAVIGATION LINKS --- */}
+        <Box display="flex" alignItems="center" gap={2}>
+          
+          {user ? (
+            <>
+              {/* User Info Badge */}
+              <Box className="user-badge">
+                <Avatar sx={{ width: 30, height: 30, bgcolor: '#ffc107', fontSize: 16, color: '#000' }}>
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                </Avatar>
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', lineHeight: 1 }}>
+                    {user.name}
+                  </Typography>
+                  <Typography variant="caption" sx={{ opacity: 0.8, textTransform: 'uppercase', fontSize: '0.65rem' }}>
+                    {user.role}
+                  </Typography>
+                </Box>
               </Box>
-            )}
-            
-            <Tooltip title="Logout">
+
               <Button 
                 color="inherit" 
-                onClick={logout} 
-                startIcon={<LogoutIcon />}
-                className="nav-logout-btn"
-                size="small"
+                startIcon={<Dashboard />} 
+                component={Link} 
+                to="/dashboard"
+                className="nav-btn"
+              >
+                Dashboard
+              </Button>
+
+              <Button 
+                variant="contained" 
+                size="small" 
+                startIcon={<Logout />} 
+                onClick={handleLogout} 
+                className="logout-btn"
               >
                 Logout
               </Button>
-            </Tooltip>
-          </Box>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/login" className="nav-btn">Login</Button>
+              <Button 
+                color="inherit" 
+                variant="outlined" 
+                component={Link} 
+                to="/register" 
+                className="register-btn"
+              >
+                Register
+              </Button>
+            </>
+          )}
 
-        </Toolbar>
-      </Container>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };

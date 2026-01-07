@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const cors = require('cors');
-const path = require('path'); // Required for image uploads
+const path = require('path');
 const connectDB = require('./config/db');
 
 // Load env vars
@@ -13,21 +13,23 @@ connectDB();
 
 const app = express();
 
-// --- 1. MIDDLEWARE (MUST BE AT THE TOP) ---
-app.use(express.json()); // Allows us to accept JSON data
-app.use(cors()); // Allows frontend to communicate with backend
+// Middleware
+app.use(express.json());
+app.use(cors());
 
-// --- 2. STATIC FOLDERS ---
-// This makes the 'uploads' folder accessible to the browser for images
+// Static folder for images
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- 3. MOUNT ROUTERS ---
+// Mount Routers
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/hostels', require('./routes/hostelRoutes'));
 app.use('/api/daily-performance', require('./routes/dailyPerformanceRoutes'));
-app.use('/api/complaints', require('./routes/complaintRoutes')); // Uncomment when you create this file
-app.use('/api/menus', require('./routes/menuRoutes')); // Plural 'menus' matches Frontend
-app.use('/api/reviews', require('./routes/reviewRoutes'));
+// app.use('/api/complaints', require('./routes/complaintRoutes')); // Uncomment when ready
+app.use('/api/menus', require('./routes/menuRoutes'));
+
+// --- THIS LINE IS REQUIRED FOR DELETE TO WORK ---
+app.use('/api/reviews', require('./routes/reviewRoutes')); 
+// -----------------------------------------------
 
 const PORT = process.env.PORT || 5000;
 
@@ -39,6 +41,5 @@ const server = app.listen(
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`.red);
-  // Close server & exit process
   server.close(() => process.exit(1));
 });

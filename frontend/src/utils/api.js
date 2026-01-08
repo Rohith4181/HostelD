@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Connects to your Backend
+  baseURL: 'https://hosteldrishti-backend.onrender.com/api', // Connects to your Backend
   headers: {
     'Content-Type': 'application/json'
   }

@@ -33,13 +33,15 @@ exports.getHostel = async (req, res) => {
 // @access  Private (DWO)
 exports.createHostel = async (req, res) => {
   try {
-    // 1. Handle Image Upload path
+    // --- KEY CHANGE HERE ---
+    // Instead of building a localhost URL, we just take the path from Cloudinary
     let coverImagePath = '';
+    
     if (req.file) {
-      coverImagePath = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      // req.file.path is the secure URL directly from Cloudinary
+      coverImagePath = req.file.path; 
     }
 
-    // 2. Create Hostel
     const hostel = await Hostel.create({
       ...req.body,
       coverImage: coverImagePath
@@ -56,14 +58,9 @@ exports.createHostel = async (req, res) => {
 // @access  Private (DWO)
 exports.getUnassignedWardens = async (req, res) => {
   try {
-    // 1. Find all Wardens
     const allWardens = await User.find({ role: 'Warden' });
-
-    // 2. Find all Hostels to see which Wardens are taken
     const hostels = await Hostel.find();
     const assignedWardenIds = hostels.map(h => h.warden.toString());
-
-    // 3. Filter the list
     const unassigned = allWardens.filter(w => !assignedWardenIds.includes(w._id.toString()));
 
     res.status(200).json({ success: true, count: unassigned.length, data: unassigned });

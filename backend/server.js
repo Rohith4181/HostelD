@@ -17,19 +17,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Static folder for images
+// Static folder for images (Optional now that we use Cloudinary, but good to keep)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Mount Routers
+// --- MOUNT ROUTERS ---
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/hostels', require('./routes/hostelRoutes'));
 app.use('/api/daily-performance', require('./routes/dailyPerformanceRoutes'));
-// app.use('/api/complaints', require('./routes/complaintRoutes')); // Uncomment when ready
-app.use('/api/menus', require('./routes/menuRoutes'));
 
-// --- THIS LINE IS REQUIRED FOR DELETE TO WORK ---
+// ✅ FIXED: This line is now active!
+app.use('/api/complaints', require('./routes/complaintRoutes')); 
+
+app.use('/api/menus', require('./routes/menuRoutes'));
 app.use('/api/reviews', require('./routes/reviewRoutes')); 
-// -----------------------------------------------
 
 const PORT = process.env.PORT || 5000;
 

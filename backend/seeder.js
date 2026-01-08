@@ -20,18 +20,27 @@ mongoose.connect(process.env.MONGO_URI);
 // Import Data
 const importData = async () => {
   try {
-    // 1. Clear existing data AND INDEXES (The Fix)
-    // We use .deleteMany() for most, but .collection.drop() for Hostels
-    // to ensure the old "warden_id" unique index is destroyed.
-    await User.deleteMany();
-    
+    // ---------------------------------------------------------
+    // 1. FIX: Drop the Users collection to remove old indexes
+    // ---------------------------------------------------------
+    try {
+      await User.collection.drop();
+      console.log('User Collection & Indexes Dropped...'.blue);
+    } catch (e) {
+      if (e.code === 26) {
+        console.log('User collection did not exist, skipping...'.grey);
+      } else {
+        throw e;
+      }
+    }
+
+    // Do the same for Hostels (as you had before)
     try {
       await Hostel.collection.drop(); 
       console.log('Hostel Collection & Indexes Dropped...'.blue);
     } catch (e) {
-      // Ignore error if collection doesn't exist yet
       if (e.code === 26) { 
-        console.log('Hostel collection did not exist, skipping drop...'.grey);
+        console.log('Hostel collection did not exist, skipping...'.grey);
       } else {
         throw e;
       }
